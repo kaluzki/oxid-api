@@ -1,0 +1,25 @@
+{
+  "name": "kaluzki/oxid-api",
+  "description": "Restful api for oxid shop",
+  "keywords": ["oxid", "modules", "restful", "api"],
+  "homepage": "https://github.com/kaluzki/oxid-api",
+  "license": "MIT",
+  "authors": [
+    {"name": "Demjan Kaluzki"}
+  ],
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.5.0",
+    "silex/silex": "~2.0"
+  },
+  "require-dev": {
+    "phpunit/PHPUnit": "~3.0",
+    "oxid-esales/oxideshop-metapackage-ce": "dev-master"
+  },
+  "autoload": {
+    "psr-4": {
+      "kaluzki\\": ["src", "tests"]
+    }
+  }
+}
