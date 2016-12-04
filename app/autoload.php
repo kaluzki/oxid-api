@@ -6,6 +6,5 @@
  * file that was distributed with this source code.
  */
 
-require dirname(__DIR__) . '/app/autoload.php';
-
-(new kaluzki\Oxid\Api\Application())->run();
+require dirname(__DIR__) . '/vendor/autoload.php';
+require dirname(__DIR__) . '/source/bootstrap.php';
