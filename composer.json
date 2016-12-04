@@ -15,11 +15,15 @@
   },
   "require-dev": {
     "phpunit/PHPUnit": "~3.0",
-    "oxid-esales/oxideshop-metapackage-ce": "dev-master"
+    "oxid-esales/oxideshop-metapackage-ce": "dev-master",
+    "oxid-esales/eshop-ide-helper": "dev-master"
   },
   "autoload": {
     "psr-4": {
       "kaluzki\\": ["src", "tests"]
     }
+  },
+  "scripts": {
+    "oe:ide": "oe-eshop-ide_helper"
   }
 }
