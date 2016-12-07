@@ -11,7 +11,8 @@
   "prefer-stable": true,
   "require": {
     "php": ">=5.5.0",
-    "silex/silex": "~2.0"
+    "silex/silex": "~2.0",
+    "willdurand/hateoas": "^2.10"
   },
   "require-dev": {
     "phpunit/PHPUnit": "~3.0",
