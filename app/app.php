@@ -8,15 +8,15 @@
 
 require_once 'autoload.php';
 
-use Slim\Http\Request;
-use Slim\Http\Response;
+return function() {
+    $app = new Slim\App(include 'config.php');
 
-$app = new Slim\App();
+    foreach (include 'middleware.php' as $callable) {
+        $app->add($callable);
+    }
 
-$app->get('/', function(Request $request, Response $response) {
-    return $response->withJson(['it' => 'works!']);
-});
-
-return function() use($app) {
+    foreach (include 'routes.php' as $pattern => $callable) {
+        $app->get($pattern, $callable);
+    }
     $app->run();
 };
