@@ -1,23 +1,30 @@
 {
   "name": "kaluzki/oxid-api",
-  "description": "Restful api for oxid shop",
+  "type": "oxidshop-module",
+  "description": "restful api for oxid shop",
   "keywords": ["oxid", "modules", "restful", "api"],
   "homepage": "https://github.com/kaluzki/oxid-api",
   "license": "MIT",
-  "authors": [
-    {"name": "Demjan Kaluzki"}
-  ],
+  "authors": [{"name": "Demjan Kaluzki"}],
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/php-fn/php-fn"
+    }
+  ],
   "require": {
-    "php": ">=5.5.0",
-    "slim/slim": "~3.0",
-    "woohoolabs/yin": "~1.0"
+    "roave/security-advisories": "dev-master",
+    "symfony/console": "^3.4",
+    "php-di/slim-bridge": "^1.1",
+    "php-fn/php-fn": "dev-master",
+    "php": ">=5.6"
   },
   "require-dev": {
-    "phpunit/PHPUnit": "~3.0",
-    "oxid-esales/oxideshop-metapackage-ce": "dev-master",
-    "oxid-esales/eshop-ide-helper": "dev-master"
+    "oxid-esales/flow-theme": "^2.3",
+    "oxid-esales/oxideshop-ce": "^6.0",
+    "oxid-esales/oxideshop-composer-plugin": "^2.0"
   },
   "autoload": {
     "psr-4": {
@@ -25,6 +32,7 @@
     }
   },
   "scripts": {
-    "oe:ide": "oe-eshop-ide_helper"
+  },
+  "extra": {
   }
 }

@@ -1,14 +1,21 @@
+# ignore everything
 /*
 
-!.gitignore
-!README.md
+# http://php-pds.com/
 
-!LICENSE
-!composer.json
-!phpunit.xml.dist
-!.travis.yml
+## dirs
+!/bin/
+!/config/
+!/docs/
+!/public/
+!/resources/
+!/src/
+!/tests/
 
-!app/
-!src/
-!tests/
-!web/
+## files
+!/.gitignore
+!/LICENSE*
+!/README*
+!/composer*
+!/phpunit.xml.dist
+!/.travis.yml
