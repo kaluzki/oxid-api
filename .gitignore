@@ -13,9 +13,9 @@
 !/tests/
 
 ## files
+!/.editorconfig
+!/.gitattributes
 !/.gitignore
+!/composer*
 !/LICENSE*
 !/README*
-!/composer*
-!/phpunit.xml.dist
-!/.travis.yml

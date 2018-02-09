@@ -1,36 +1,36 @@
 {
   "name": "kaluzki/oxid-api",
-  "type": "oxidshop-module",
-  "description": "restful api for oxid shop",
+  "description": "oxid restful api",
   "keywords": ["oxid", "modules", "restful", "api"],
   "homepage": "https://github.com/kaluzki/oxid-api",
   "license": "MIT",
   "authors": [{"name": "Demjan Kaluzki"}],
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/php-fn/php-fn"
-    }
-  ],
   "require": {
+    "php": ">=5.6",
     "roave/security-advisories": "dev-master",
-    "symfony/console": "^3.4",
     "php-di/slim-bridge": "^1.1",
-    "php-fn/php-fn": "dev-master",
-    "php": ">=5.6"
+    "php-fn/php-fn": "^0.1"
   },
   "require-dev": {
-    "oxid-esales/flow-theme": "^2.3",
     "oxid-esales/oxideshop-ce": "^6.0",
-    "oxid-esales/oxideshop-composer-plugin": "^2.0"
+    "oxid-esales/paypal-module": "^5.1",
+    "oxid-esales/oxideshop-demodata-ce": "^6.0"
   },
   "autoload": {
     "psr-4": {
-      "kaluzki\\": ["src", "tests"]
+      "kaluzki\\": ["src"]
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "kaluzki\\": ["tests"]
+    }
+  },
+  "bin": [
+    "bin/oxid-api"
+  ],
   "scripts": {
   },
   "extra": {
