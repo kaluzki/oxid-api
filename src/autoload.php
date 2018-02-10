@@ -6,18 +6,18 @@
  * file that was distributed with this source code.
  */
 
-if(!call_user_func(function(array $candidates) {
+return call_user_func(function(array $candidates) {
     foreach ($candidates as $candidate) {
         if (file_exists($candidate)) {
             /** @noinspection PhpIncludeInspection */
             require_once $candidate;
-            return true;
+            return function(...$definitions) {
+                return \kaluzki\Oxid\Container::createContainer(...$definitions);
+            };
         }
     }
-    return false;
+    die('vendor/autoload.php could not be found. Did you run `composer install`?');
 }, [
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/../../../autoload.php'
-])) {
-    die('vendor/autoload.php could not be found. Did you run `composer install`?');
-}
+]);
