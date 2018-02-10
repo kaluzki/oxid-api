@@ -10,6 +10,7 @@ namespace kaluzki\DI;
 use DI\ContainerBuilder;
 
 /**
+ * @mixin \DI\Container
  */
 trait ContainerAwareTrait
 {
@@ -34,6 +35,15 @@ trait ContainerAwareTrait
     protected static function getContainerDefinitions(ContainerBuilder $builder = null)
     {
         return [];
+    }
+
+    /**
+     * @param mixed ...$args
+     * @return mixed
+     */
+    public function __invoke(...$args)
+    {
+        return $this->call(...$args);
     }
 
     /**

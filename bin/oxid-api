@@ -7,9 +7,8 @@
  * file that was distributed with this source code.
  */
 
-/** @var kaluzki\Oxid\Container $container */
 $container = call_user_func(
     include dirname(__DIR__) . '/src/autoload.php',
     dirname(__DIR__) . '/config/console.php'
 );
-$container->call(kaluzki\Oxid\Console\Api::class);
+$container(kaluzki\Oxid\Console\Api::class);
