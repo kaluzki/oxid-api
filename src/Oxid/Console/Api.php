@@ -7,9 +7,12 @@
  */
 namespace kaluzki\Oxid\Console;
 
-use Symfony\Component\Console\Application;
+use OxidEsales\UnifiedNameSpaceGenerator\UnifiedNameSpaceClassMapProvider;
+use Silly\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * console application for oxid api
@@ -24,22 +27,28 @@ class Api extends Application
     /**
      * @inheritdoc
      */
-    public function __construct($name)
-    {
-        parent::__construct($name, self::VERSION);
-    }
-
-    /**
-     * @inheritdoc
-     */
     protected function getDefaultCommands()
     {
         return \fn\map(parent::getDefaultCommands(), function(Command $command) {
             return $command->setHidden(true);
         })->merge([
-            (new Command('meta'))->setCode(function($ignore, OutputInterface $output) {
-                $output->writeln(['', '<info>todo</info>', '']);
-            }),
+            $this->command('meta', function(
+                SymfonyStyle $style,
+                UnifiedNameSpaceClassMapProvider $provider
+            ) {
+                $style->writeln(\fn\map($provider->getClassMap())->keys);
+            })
         ]);
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int
+     * @throws \Exception
+     */
+    public function __invoke(InputInterface $input, OutputInterface $output)
+    {
+        return $this->run(...func_get_args());
     }
 }
