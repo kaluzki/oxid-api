@@ -12,7 +12,7 @@
     "roave/security-advisories": "dev-master",
     "php-di/slim-bridge": "^1.1",
     "mnapoli/silly": "^1.5",
-    "php-fn/php-fn": "^0.1"
+    "php-fn/php-fn": "dev-master"
   },
   "require-dev": {
     "oxid-esales/oxideshop-ce": "^6.0",

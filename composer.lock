@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ef8796d5ea822a148a248643c0cbb886",
+    "content-hash": "c6702487973d9b39c0a4d5e88beb949d",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -305,16 +305,16 @@
         },
         {
             "name": "php-fn/php-fn",
-            "version": "v0.1.180204",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fn/php-fn.git",
-                "reference": "46919807cce4c2aa001419692fc9e53317ad3082"
+                "reference": "794a918ec6307ae297355365257ee2a48e798d58"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fn/php-fn/zipball/46919807cce4c2aa001419692fc9e53317ad3082",
-                "reference": "46919807cce4c2aa001419692fc9e53317ad3082",
+                "url": "https://api.github.com/repos/php-fn/php-fn/zipball/794a918ec6307ae297355365257ee2a48e798d58",
+                "reference": "794a918ec6307ae297355365257ee2a48e798d58",
                 "shasum": ""
             },
             "require": {
@@ -350,7 +350,7 @@
                 "library",
                 "php"
             ],
-            "time": "2018-02-04T14:22:42+00:00"
+            "time": "2018-02-11 22:09:56"
         },
         {
             "name": "pimple/pimple",
@@ -3090,7 +3090,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "roave/security-advisories": 20
+        "roave/security-advisories": 20,
+        "php-fn/php-fn": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
