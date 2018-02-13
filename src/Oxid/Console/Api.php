@@ -29,7 +29,16 @@ class Api extends Application
         return map(parent::getDefaultCommands(), function(Console\Command\Command $command) {
             return $command->setHidden(true);
         })->merge([
-            $this->command('meta', Command\Meta::class)
+            $this->command('meta [patterns]*',Command\Meta::class)
+                ->defaults(['patterns' => ['**']])->descriptions('', [
+                    'patterns' => <<<TXT
+**          > all classes
+Core\Base   > given class
+Core\Base*  > subclasses of the given class
+Core\Base** > given class with its subclasses
+the namespace OxidEsales\Eshop\ will be prefixed
+TXT
+                ])
         ]);
     }
 
