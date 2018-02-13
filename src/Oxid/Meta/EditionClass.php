@@ -31,6 +31,7 @@ use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Model\MultiLanguageModel;
 use OxidEsales\Eshop\Core\SeoEncoder;
+use ReflectionClass;
 
 /**
  * @property-read string $class
@@ -39,6 +40,11 @@ use OxidEsales\Eshop\Core\SeoEncoder;
  */
 class EditionClass
 {
+    /**
+     * @var string
+     */
+    const NS = 'OxidEsales\Eshop\\';
+
     /**
      * @var string[]
      */
@@ -116,14 +122,14 @@ class EditionClass
      */
     private static function parents($class)
     {
-        $ref = new \ReflectionClass($class);
+        $ref = new ReflectionClass($class);
         $parents = [];
         while($parent = $ref->getParentClass()) {
             $parents[] = $parent->getName();
             $ref = $parent;
         }
         return fn\map($parents, function($class) {
-            return strpos($class, 'OxidEsales\Eshop\\') === 0 ? $class : null;
+            return strpos($class, self::NS) === 0 ? $class : null;
         })->map;
     }
 }
