@@ -7,10 +7,13 @@
  */
 namespace kaluzki\Oxid\Console\Command;
 
-use function fn\map, fn\sub;
+use function fn\map, fn\sub, fn\mapRow, fn\traverse;
+use kaluzki\Console\HereDocValidation;
+use kaluzki\Console\Style;
 use kaluzki\Oxid\Meta\EditionClass;
+use League\Flysystem\Filesystem;
 use OxidEsales\UnifiedNameSpaceGenerator\UnifiedNameSpaceClassMapProvider;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Twig_Environment;
 
 /**
  */
@@ -22,24 +25,66 @@ class Meta
     private $provider;
 
     /**
-     * @param UnifiedNameSpaceClassMapProvider $provider
+     * @var \League\Flysystem\Filesystem
      */
-    public function __construct(UnifiedNameSpaceClassMapProvider $provider)
+    private $fs;
+
+    /**
+     * @var Twig_Environment
+     */
+    private $twig;
+
+    /**
+     * @param UnifiedNameSpaceClassMapProvider $provider
+     * @param Filesystem $fs
+     * @param Twig_Environment $twig
+     */
+    public function __construct(UnifiedNameSpaceClassMapProvider $provider, Filesystem $fs, Twig_Environment $twig)
     {
         $this->provider = $provider;
+        $this->fs = $fs;
+        $this->twig = $twig;
     }
 
     /**
-     * @param SymfonyStyle $style
-     * @param string[] $patterns
+     * @param string $template
+     * @param Style $style
+     *
+     * @return \Twig_Template
      */
-    public function __invoke(SymfonyStyle $style, array $patterns)
+    private function getTemplate($template, Style $style)
+    {
+        if (!$this->fs->has($template)) {
+            $template = $style->ask(
+                'Twig template (type <comment>EOT</comment> to finish the input)',
+                null,
+                new HereDocValidation('EOT')
+            );
+        } else if ($this->fs->get($template)->isDir()) {
+            $file = $style->choice(
+                'Choose twig file',
+                traverse($this->fs->listFiles($template), mapRow('path'))
+            );
+            $template  = $this->fs->get($file)->read();
+        }  else {
+            $template = $this->fs->get($template)->read();
+        }
+        return $this->twig->createTemplate($template);
+    }
+
+    /**
+     * @param Style $style
+     * @param string[] $patterns
+     * @param string $namespace
+     * @param string $template
+     */
+    public function __invoke(Style $style, array $patterns, $namespace, $template)
     {
         $filters = $this->filters($patterns);
 
         /** @var EditionClass[] $classes */
-        $classes = map($this->provider->getClassMap())->keys(function($className) use($filters) {
-            $class = new EditionClass($className);
+        $classes = map($this->provider->getClassMap(), function(array $info, $className) use($filters, $style) {
+            $class = new EditionClass($className, $info);
             foreach ($filters as $filter) {
                 if ($filter($class)) {
                     return $class;
@@ -48,9 +93,39 @@ class Meta
             return null;
         });
 
+        $dir = 'resources/generated/';
+        if ($template = $template ? $this->getTemplate($template, $style) : null) {
+            $success = $this->fs->deleteDir($dir);
+            $style->isVerbose() && ($success ? $style->success("deleted $dir") : $style->note("not found $dir"));
+        }
+
         foreach ($classes as $class) {
-            $style->writeln($class->class);
-            $style->isVerbose() && $style->listing($class->parents);
+            $style->isVerbose() ? $style->title($class->class) : $style->writeln($class->class);
+            $ns = "{$namespace}{$class->package}";
+            $path = str_replace('\\', DIRECTORY_SEPARATOR, "$dir/$ns/{$class->shortName}.php");
+
+            if ($style->isVerbose()) {
+                $style->listing([
+                    'name: ' . $class->shortName,
+                    'parent: ' . $class->editionClassName,
+                    'abstract: ' . json_encode($class->isAbstract),
+                    'interface: ' . json_encode($class->isInterface),
+                    'namespace: ' . $class->namespace,
+                    'package: ' . $class->package,
+                    'parents: ' . implode( ' < ', traverse($class->parents, function($parent) {
+                        return str_replace(EditionClass::NS, '', $parent);
+                    })),
+                    'path: ' .  $path,
+                ]);
+            }
+
+            if ($template) {
+                $success = $this->fs->write(
+                    $path,
+                    $template->render(['class' => $class, 'namespace' => $ns, 'path' => $path])
+                );
+                $style->isVerbose() && ($success ? $style->success($path) : $style->error($path));
+            }
         }
     }
 

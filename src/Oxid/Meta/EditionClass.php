@@ -7,8 +7,10 @@
  */
 
 namespace kaluzki\Oxid\Meta;
-use fn;
 
+use function DI\get;
+use function DI\object;
+use fn;
 use function fn\map;
 use fn\Map\Sort;
 use kaluzki\DI\ArrayAccessDecorator;
@@ -35,8 +37,14 @@ use ReflectionClass;
 
 /**
  * @property-read string $class
+ * @property-read string $shortName
+ * @property-read string $editionClassName
+ * @property-read bool $isAbstract
+ * @property-read bool $isInterface
  * @property-read string $package
+ * @property-read string $namespace
  * @property-read string[] $parents
+ * @property-read string[] $fields
  */
 class EditionClass
 {
@@ -49,24 +57,24 @@ class EditionClass
      * @var string[]
      */
     const PACKAGES = [
-        Base::class => '/',
-        SeoEncoder::class => '/Seo',
-        BaseModel::class => '/Model',
-        MultiLanguageModel::class => '/Model/I18n',
-        ListModel::class => '/Model/List',
-        BaseController::class => '/Controller',
-        FrontendController::class => '/Front',
-        WidgetController::class => '/Front/Widget',
-        AccountController::class => '/Front/Account',
-        ArticleListController::class => '/Front/Article/List',
-        ArticleDetailsController::class => '/Front/Article/Details',
-        AdminController::class => '/Admin',
-        ListComponentAjax::class => '/Admin/Component',
-        AdminListController::class => '/Admin/List',
-        AdminDetailsController::class => '/Admin/Details',
-        DynamicExportBaseController::class => '/Admin/Details/Export',
-        ShopConfiguration::class => '/Admin/Details/Config',
-        ObjectSeo::class => '/Admin/Details/Seo',
+        Base::class => '\\',
+        SeoEncoder::class => '\\Seo',
+        BaseModel::class => '\\Model',
+        MultiLanguageModel::class => '\\Model\\I18n',
+        ListModel::class => '\\Model\\List',
+        BaseController::class => '\\Controller',
+        FrontendController::class => '\\Front',
+        WidgetController::class => '\\Front\\Widget',
+        AccountController::class => '\\Front\\Account',
+        ArticleListController::class => '\\Front\\Article\\List',
+        ArticleDetailsController::class => '\\Front\\Article\\Details',
+        AdminController::class => '\\Admin',
+        ListComponentAjax::class => '\\Admin\\Component',
+        AdminListController::class => '\\Admin\\List',
+        AdminDetailsController::class => '\\Admin\\Details',
+        DynamicExportBaseController::class => '\\Admin\\Details\\Export',
+        ShopConfiguration::class => '\\Admin\\Details\\Config',
+        ObjectSeo::class => '\\Admin\\Details\\Seo',
     ];
 
     use fn\Meta\Properties\ReadOnlyTrait;
@@ -83,17 +91,25 @@ class EditionClass
 
     /**
      * @param iterable|callable [$children]
+     * @param array $info
      */
-    public function __construct($class)
+    public function __construct($class, array $info)
     {
-        $this->properties = new ArrayAccessDecorator(Container::createContainer([
-            'class'   => $class,
+        $this->properties = new ArrayAccessDecorator(Container::createContainer($info, [
+            ReflectionClass::class   => object()->constructor(get('class')),
+            'class'=> $class,
+            'shortName' => function(ReflectionClass $ref) {
+                return $ref->getShortName();
+            },
             'package' => function() {
                 return self::package($this->class);
             },
             'parents' => function() {
                 return self::parents($this->class);
-            }
+            },
+            'namespace' => function(ReflectionClass $ref) {
+                return $ref->getNamespaceName();
+            },
         ]));
     }
 
@@ -113,7 +129,7 @@ class EditionClass
                 return $package;
             }
         }
-        return '/UNKNOWN';
+        return '\\UNKNOWN';
     }
 
     /**
