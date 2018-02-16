@@ -16,7 +16,18 @@ if(!call_user_func(function(array $candidates) {
     }
     return false;
 }, defined('INSTALLATION_ROOT_PATH') ? [] : [
+    // lookup priority:
+
+    // as a module in an installed shop
+    dirname(dirname(dirname(dirname(__DIR__)))) . '/source/bootstrap.php',
+
+    // as a module in not yet installed shop
+    dirname(dirname(dirname(dirname(__DIR__)))) . '/vendor/oxid-esales/oxideshop-ce/source/bootstrap.php',
+
+    // as a project in an installed shop
     dirname(__DIR__) . '/source/bootstrap.php',
+
+    // as a project in a not yet installed shop
     dirname(__DIR__) . '/vendor/oxid-esales/oxideshop-ce/source/bootstrap.php',
 ]
 )) {
