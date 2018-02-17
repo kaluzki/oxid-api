@@ -18,6 +18,12 @@ return call_user_func(function(array $candidates) {
     }
     die('vendor/autoload.php could not be found. Did you run `composer install`?');
 }, [
-    __DIR__ . '/../vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php'
+    // lookup priority:
+
+    // as a composer project
+    dirname(__DIR__) . '/vendor/autoload.php',
+
+    // as a composer module
+    dirname(dirname(dirname(__DIR__))) . '/autoload.php'
 ]);
+

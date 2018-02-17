@@ -6,16 +6,16 @@
  * file that was distributed with this source code.
  */
 
-if(!call_user_func(function(array $candidates) {
+defined('INSTALLATION_ROOT_PATH') || call_user_func(function(array $candidates) {
     foreach ($candidates as $candidate) {
         if (file_exists($candidate)) {
             /** @noinspection PhpIncludeInspection */
             require_once $candidate;
-            return true;
+            return;
         }
     }
-    return false;
-}, defined('INSTALLATION_ROOT_PATH') ? [] : [
+    die('oxid source/bootstrap.php could not be found.');
+}, [
     // lookup priority:
 
     // as a module in an installed shop
@@ -29,7 +29,4 @@ if(!call_user_func(function(array $candidates) {
 
     // as a project in a not yet installed shop
     dirname(__DIR__) . '/vendor/oxid-esales/oxideshop-ce/source/bootstrap.php',
-]
-)) {
-    die('oxid source/bootstrap.php could not be found.');
-}
+]);
