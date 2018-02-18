@@ -1,0 +1,1 @@
+a:1:{s:7:"content";a:9:{s:10:"oxdateused";i:0;s:9:"oxorderid";i:0;s:8:"oxuserid";i:0;s:10:"oxreserved";i:0;s:11:"oxvouchernr";i:0;s:16:"oxvoucherserieid";i:0;s:10:"oxdiscount";i:0;s:4:"oxid";i:0;s:11:"oxtimestamp";i:0;}}

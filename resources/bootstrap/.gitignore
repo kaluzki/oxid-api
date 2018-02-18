@@ -6,3 +6,5 @@
 !/tmp/
 /tmp/*
 !/tmp/config.1.amodules.txt
+!/tmp/oxc_fieldnames_ox*txt
+!/tmp/oxc_ox*_allfields_1.txt

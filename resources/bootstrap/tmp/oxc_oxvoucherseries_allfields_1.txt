@@ -1,0 +1,1 @@
+a:1:{s:7:"content";a:14:{s:4:"oxid";i:0;s:8:"oxshopid";i:0;s:9:"oxserienr";i:0;s:18:"oxseriedescription";i:0;s:10:"oxdiscount";i:0;s:14:"oxdiscounttype";i:0;s:11:"oxbegindate";i:0;s:9:"oxenddate";i:0;s:17:"oxallowsameseries";i:0;s:18:"oxallowotherseries";i:0;s:17:"oxallowuseanother";i:0;s:14:"oxminimumvalue";i:0;s:15:"oxcalculateonce";i:0;s:11:"oxtimestamp";i:0;}}

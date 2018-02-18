@@ -1,0 +1,1 @@
+a:1:{s:7:"content";a:10:{s:4:"oxid";i:0;s:7:"oxartid";i:0;s:10:"oxfilename";i:0;s:11:"oxstorehash";i:0;s:15:"oxpurchasedonly";i:0;s:14:"oxmaxdownloads";i:0;s:19:"oxmaxunregdownloads";i:0;s:13:"oxlinkexptime";i:0;s:17:"oxdownloadexptime";i:0;s:11:"oxtimestamp";i:0;}}
