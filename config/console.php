@@ -1,5 +1,4 @@
 <?php
-
 /**
  * (c) kaluzki
  *
@@ -7,7 +6,8 @@
  * file that was distributed with this source code.
  */
 
-use function DI\object, DI\get;
+namespace DI;
+
 use kaluzki\Console\Style;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
