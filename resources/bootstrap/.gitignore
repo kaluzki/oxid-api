@@ -1,0 +1,8 @@
+# config fallback bootstrap directory
+/*
+!/.gitignore
+!/config.inc.php
+
+!/tmp/
+/tmp/*
+!/tmp/config.1.amodules.txt
