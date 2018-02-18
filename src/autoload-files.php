@@ -37,6 +37,7 @@ defined('INSTALLATION_ROOT_PATH') || call_user_func(function($vendorPath) {
         file_put_contents(OX_LOG_FILE, $message, FILE_APPEND);
     }
 
+    Core\Registry::set(Core\Config::class, new \kaluzki\Oxid\Core\TempConfig);
     Core\Registry::set(Core\ConfigFile::class, new Core\ConfigFile(OX_BASE_PATH . 'config.inc.php'));
     set_exception_handler([new Core\Exception\ExceptionHandler, 'handleUncaughtException']);
 
