@@ -1,0 +1,26 @@
+<?php
+/**
+ * <copyright>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace {{ namespace }};
+
+/**
+{% for field in class.fields %}
+ * @property mixed ${{ field|slice(2) }}
+{% endfor %}
+ */
+trait Has{{ class.shortName }}Properties
+{
+    /**
+     * @var array
+     */
+    protected static $hasProperties = [
+{% for field in class.fields %}
+        '{{ field|slice(2) }}' => '{{ class.table }}__{{ field }}',
+{% endfor %}
+    ];
+}

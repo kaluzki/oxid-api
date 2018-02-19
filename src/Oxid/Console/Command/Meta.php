@@ -73,12 +73,25 @@ class Meta
     }
 
     /**
+     * @param string $template
+     * @return \Twig_Template
+     */
+    private function getFileNameTemplate($template)
+    {
+        return $this->twig->createTemplate($template ?: <<<TWIG
+{{ dir }}/{{ namespace }}/{{ class.package }}/{{ class.shortName }}.php
+TWIG
+        );
+    }
+
+    /**
      * @param Style $style
      * @param string[] $patterns
      * @param string $namespace
      * @param string $template
+     * @param string $fileName
      */
-    public function __invoke(Style $style, array $patterns, $namespace, $template)
+    public function __invoke(Style $style, array $patterns, $namespace, $template = null, $fileName = null)
     {
         $filters = $this->filters($patterns);
 
@@ -98,17 +111,20 @@ class Meta
             $success = $this->fs->deleteDir($dir);
             $style->isVerbose() && ($success ? $style->success("deleted $dir") : $style->note("not found $dir"));
         }
+        $fileName = $this->getFileNameTemplate($fileName);
 
         foreach ($classes as $class) {
-            $ns = "{$namespace}{$class->package}";
-            $path = str_replace('\\', DIRECTORY_SEPARATOR, "$dir/$ns/{$class->shortName}.php");
-
+            $path = str_replace(
+                ['\\', '///', '//', '/'],
+                DIRECTORY_SEPARATOR,
+                $fileName->render(['dir' => $dir, 'namespace' => $namespace, 'class' => $class])
+            );
             $style->isVerbose() ? $this->classInfo($class, $path, $style) :  $style->writeln($class->class);
 
             if ($template) {
                 $success = $this->fs->write(
                     $path,
-                    $template->render(['class' => $class, 'namespace' => $ns, 'path' => $path])
+                    $template->render(['class' => $class, 'namespace' => $namespace, 'path' => $path])
                 );
                 $style->isVerbose() && ($success ? $style->success($path) : $style->error($path));
             }

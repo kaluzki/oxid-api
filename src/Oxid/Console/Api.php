@@ -30,12 +30,19 @@ class Api extends Application
         return map(parent::getDefaultCommands(), function(Console\Command\Command $command) {
             return $command->setHidden(true);
         })->merge([
-            $this->command('meta [patterns]* [--namespace=] [--template=]',Command\Meta::class)
+            $this->command('meta [patterns]* [--namespace=] [--template=] [--file-name=]',Command\Meta::class)
                 ->defaults(['patterns' => ['**']])
-                ->descriptions('oxid-api meta "Core\Model\BaseModel*" -v', [
-                    '--namespace' => 'psr-4 namespace for generated files',
-                    '--template' => 'template for file generation',
-                    'patterns' => <<<TXT
+                ->descriptions(<<<EOT
+bin/oxid-api meta -v "Core\Model\BaseModel*" \\
+     --namespace="Vendor\Oxid\Model" \\
+     --file-name="{{ dir }}/{{ namespace }}/Has{{ class.shortName }}Properties.php" \\
+     --template="config/templates/HasProperties.twig"
+EOT
+, [
+    '--namespace' => 'psr-4 namespace for generated files',
+    '--template' => 'twig template for file content',
+    '--file-name' => 'twig template for file name',
+    'patterns' => <<<TXT
                     
 **          > all classes
 Core\Base   > given class
@@ -43,9 +50,7 @@ Core\Base*  > subclasses of the given class
 Core\Base** > given class with its subclasses
 the namespace OxidEsales\Eshop\ will be prefixed
 TXT
-                ])
-            ]
-        );
+])]);
     }
 
     /**
