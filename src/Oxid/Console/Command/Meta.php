@@ -100,24 +100,10 @@ class Meta
         }
 
         foreach ($classes as $class) {
-            $style->isVerbose() ? $style->title($class->class) : $style->writeln($class->class);
             $ns = "{$namespace}{$class->package}";
             $path = str_replace('\\', DIRECTORY_SEPARATOR, "$dir/$ns/{$class->shortName}.php");
 
-            if ($style->isVerbose()) {
-                $style->listing([
-                    'name: ' . $class->shortName,
-                    'parent: ' . $class->editionClassName,
-                    'abstract: ' . json_encode($class->isAbstract),
-                    'interface: ' . json_encode($class->isInterface),
-                    'namespace: ' . $class->namespace,
-                    'package: ' . $class->package,
-                    'parents: ' . implode( ' < ', traverse($class->parents, function($parent) {
-                        return str_replace(EditionClass::NS, '', $parent);
-                    })),
-                    'path: ' .  $path,
-                ]);
-            }
+            $style->isVerbose() ? $this->classInfo($class, $path, $style) :  $style->writeln($class->class);
 
             if ($template) {
                 $success = $this->fs->write(
@@ -126,6 +112,33 @@ class Meta
                 );
                 $style->isVerbose() && ($success ? $style->success($path) : $style->error($path));
             }
+        }
+    }
+
+    /**
+     * @param EditionClass $class
+     * @param string $path
+     * @param Style $style
+     */
+    private function classInfo(EditionClass $class, $path, Style $style)
+    {
+        $style->title("<info>{$class->class}</info>");
+        $style->listing([
+            'name: ' . $class->shortName,
+            'parent: ' . $class->editionClassName,
+            'abstract: ' . json_encode($class->isAbstract),
+            'interface: ' . json_encode($class->isInterface),
+            'namespace: ' . $class->namespace,
+            'package: ' . $class->package,
+            'path: ' .  $path,
+        ]);
+        $style->section('Parents');
+        $style->listing(traverse($class->parents, function($parent) {
+            return str_replace(EditionClass::NS, '', $parent);
+        }));
+        if ($table = $class->table) {
+            $style->section("table: {$table}");
+            $style->listing($class->fields);
         }
     }
 

@@ -44,6 +44,7 @@ use ReflectionClass;
  * @property-read string $package
  * @property-read string $namespace
  * @property-read string[] $parents
+ * @property-read string $table
  * @property-read string[] $fields
  */
 class EditionClass
@@ -96,7 +97,10 @@ class EditionClass
     public function __construct($class, array $info)
     {
         $this->properties = new ArrayAccessDecorator(Container::createContainer($info, [
-            ReflectionClass::class   => object()->constructor(get('class')),
+            ReflectionClass::class => object()->constructor(get('class')),
+            Base::class => function(ReflectionClass $ref) {
+                return $ref->newInstance();
+            },
             'class'=> $class,
             'shortName' => function(ReflectionClass $ref) {
                 return $ref->getShortName();
@@ -109,6 +113,12 @@ class EditionClass
             },
             'namespace' => function(ReflectionClass $ref) {
                 return $ref->getNamespaceName();
+            },
+            'table' => function(Base $base) {
+                return $base instanceof BaseModel ? $base->getCoreTableName() : null;
+            },
+            'fields' => function(Base $base) {
+                return $base instanceof BaseModel ? $base->getFieldNames() : [];
             },
         ]));
     }
