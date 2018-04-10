@@ -30,8 +30,6 @@ services:
     volumes:
       - .:/app
       - ~/.composer:/home/application/.composer
-    links:
-      - db
     networks:
       - default
       - traefik
