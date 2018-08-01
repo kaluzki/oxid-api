@@ -9,18 +9,21 @@
   "prefer-stable": true,
   "require": {
     "php": ">=5.6",
-    "roave/security-advisories": "dev-master",
     "twig/twig": "^1",
-    "league/flysystem": "^1.0",
-    "php-di/slim-bridge": "^1.1",
-    "mnapoli/silly": "^1.5",
-    "php-fn/php-fn": "dev-master"
+    "league/flysystem": "^1",
+    "php-di/slim-bridge": "^1",
+    "mnapoli/silly": "^1",
+    "php-fn/php-fn": "^1"
   },
   "require-dev": {
-    "psy/psysh": "^0.8",
-    "oxid-esales/oxideshop-ce": "^6.0",
-    "oxid-esales/paypal-module": "^5.1",
-    "oxid-esales/oxideshop-demodata-ce": "^6.0"
+    "roave/security-advisories": "dev-master",
+    "oxid-esales/oxideshop-ce": "^6",
+    "oxid-esales/paypal-module": "^5",
+    "oxid-esales/oxideshop-facts": "^2",
+    "oxid-esales/oxideshop-db-views-generator": "^1",
+    "oxid-esales/oxideshop-composer-plugin": "^2",
+    "oxid-esales/oxideshop-unified-namespace-generator": "^1",
+    "oxid-esales/oxideshop-demodata-ce": "^6"
   },
   "autoload": {
     "psr-4": {"kaluzki\\": ["src"]},
@@ -31,9 +34,5 @@
   },
   "bin": [
     "bin/oxid-api"
-  ],
-  "scripts": {
-  },
-  "extra": {
-  }
+  ]
 }
