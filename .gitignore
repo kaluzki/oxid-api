@@ -17,5 +17,6 @@
 !/.gitattributes
 !/.gitignore
 !/composer*
+!/docker-compose.yml
 !/LICENSE*
 !/README*

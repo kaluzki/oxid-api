@@ -1,0 +1,71 @@
+# docker create network traefik
+#
+# docker start traefik 2>/dev/null || docker run -tid --rm --name traefik --net=traefik \
+#        -v /var/run/docker.sock:/var/run/docker.sock \
+#        -p 80:80 -p 443:443 -p 8080:8080 \
+#        traefik:1.5 \
+#        --api \
+#        --logLevel=error \
+#        --entrypoints='Name:http Address::80' \
+#        --entrypoints='Name:https Address::443 TLS' \
+#        --defaultentrypoints=http,https \
+#        --docker \
+#        --docker.exposedbydefault=false
+#
+# docker-compose up -d
+# docker-compose exec --user $UID app bash
+
+version: "3"
+
+services:
+
+  app:
+    image: webdevops/php-apache-dev:5.6
+    restart: always
+    environment:
+      WEB_ALIAS_DOMAIN: "*.localhost"
+      WEB_DOCUMENT_ROOT: "/app/source"
+      PHP_DEBUGGER: "xdebug"
+      XDEBUG_REMOTE_HOST: "172.19.0.1"
+    volumes:
+      - .:/app
+      - ~/.composer:/home/application/.composer
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.backend=app"
+      - "traefik.frontend.rule=Host:app.localhost"
+      - "traefik.docker.network=traefik"
+      - "traefik.enable=true"
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_ABSOLUTE_URI: pma.localhost
+      PMA_USER: root
+      PMA_PASSWORD: root
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.backend=pma"
+      - "traefik.frontend.rule=Host:pma.localhost"
+      - "traefik.docker.network=traefik"
+      - "traefik.enable=true"
+
+  db:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+
+networks:
+  traefik:
+    external: true
+
+volumes:
+  db:
